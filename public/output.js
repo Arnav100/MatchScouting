@@ -20,20 +20,19 @@ var tippedOver;
 
 var climbChart;
 document.addEventListener("DOMContentLoaded", event => {
-  //  makeChart("autoChart");
-  //  makeChart("teleopChart");
+
     const app = firebase.app();
     db = firebase.firestore();
     reset();
 
     console.log("running");
     $('#teamNumButton').on("click", function() {
-        getTeam();
-        displayEvents();
+        if(getTeam())
+            displayEvents();
     });
     $('#event').change(function () {
-        displayData()
-        
+        reset();
+        displayData();
     });
 
 });
@@ -76,13 +75,9 @@ async function displayData(event)
            pullBooleanData(data.teleop.climbing.recievedHelp, gotHelp);
        });
    });
-   console.log("Matches: " + matchNames);
-   console.log("autocubes: " + autoScale);
-    console.log("telecubes: " + teleScale);
-   makeChart("Auto", autoChart, autoScale, autoSwitch);
-   makeChart("Teleop", teleChart,teleScale, teleSwitch);
 
-   console.log("climb test: " + climbed + "  " + gaveHelp + "  " + gotHelp);
+   autoChart = makeChart("Auto", autoChart, autoScale, autoSwitch);
+   teleChart = makeChart("Teleop", teleChart,teleScale, teleSwitch);
    makeClimbChart(climbed[0], gaveHelp[0], gotHelp[0]);
 
    makeCard("deadAuto", deadAutoCount );
@@ -98,10 +93,8 @@ function pullBooleanData(location, counter)
     var i = indexOfMax(location.frequency);
     if(i == -1)
         return i;
-    if(location.value[i]){
-        console.log("This was true")
+    if(location.value[i])
         counter[0] ++ ;
-    }
 }
 
 function pullArrayData(location, array)
@@ -116,18 +109,24 @@ async function displayEvents()
 {
  await   team.get()
         .then(async function (snap) {
-            $('#event').text("");
-            $('#event').append("<option disabled selected value> -- select an option -- </option>");
+            if(!snap.exists)
+            {
+                $('#teamNum').addClass("is-invalid");
+                $('#invalid').text("Team Not in database");
+            }
+            else{
+                $('#event').text("");
+                $('#event').append("<option disabled selected value> -- select an option -- </option>");
 
-            snap.data().collectionNames.forEach(function(event){
-                $('#event').append("<option>" + event + "</option>");
-            });        
+                snap.data().collectionNames.forEach(function(event){
+                    $('#event').append("<option>" + event + "</option>");
+                });   
+            }     
         });
 }
 
 function makeCard(id, data)
 {
-    console.log("id: " + id + "  data: " + data);
     $("#" + id).text(data[0]);
 }
 
@@ -170,18 +169,21 @@ function makeChart(type, chart, scale, swich)
             }]
         }
     };
+
     if(chart == null)
+    {
         chart = new Chart($('#' + type + 'Chart'),{
             type: 'bar',
             data: data,
             options: options
         });
+    }
     else
     {
         chart.data = data;
         chart.update()
     }
-    
+    return chart;
 }
 
 function makeClimbChart(total, gave, got)
@@ -224,20 +226,23 @@ function makeClimbChart(total, gave, got)
         climbChart.data = data;
         climbChart.update();
     }
-
+    
 }
 
 function getTeam()
 {   
     console.log("getting team");
+    $('#teamNum').removeClass("is-invalid");
     var teamNum = $('#teamNum').val();
     if (teamNum.length < 3) {
-        console.log("invalid team number. It was " + teamNum);
-        return
+        $('#teamNum').addClass("is-invalid");
+        $('#invalid').text("Invalid Team Number");
+        return false; 
     }
     team = db.collection("Teams").doc(teamNum);
 
     console.log(team.id);   
+    return true;
 }
 
 

@@ -36,7 +36,7 @@
         <link rel="stylesheet" type="text/css" href="style.css" />
         <script src="input.js"></script>
     </head>
-    <body class = "bg-light">
+    <body style = "background-color: aliceblue">
         <div style = "background-color: #00C851" class = "sticky-top rounded pt-3 container border-bottom nav-scroller"> 
             <nav class = "nav row ">
                 <div class = "col-md-11 row">
@@ -58,11 +58,12 @@
             <div class = "blackOps">
                 <div class = "pb-3 width-50">
                     <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" >Team Number</span>
-                            </div>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" >Team Number</span>
+                        </div>
                         <input id = "teamNum" type="text" class="form-control" >
                         <button id = "teamNumButton"class = "btn btn-outline-secondary">Enter</button>
+                        <div id="invalid" class="invalid-feedback"></div>
                     </div>
                 </div>
                 <div class = "pb-3 width-50">
