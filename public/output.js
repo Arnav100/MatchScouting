@@ -19,6 +19,7 @@ var died;
 var tippedOver;
 
 var climbChart;
+
 document.addEventListener("DOMContentLoaded", event => {
 
     const app = firebase.app();
@@ -55,6 +56,7 @@ function reset()
 
 async function displayData(event)
 {
+    $('#display').removeClass('hidden');
    var collectionName = $('#event option:selected').text();
   await team.collection(collectionName).get()
    .then(matches =>{
@@ -107,6 +109,7 @@ function pullArrayData(location, array)
 
 async function displayEvents()
 {
+    $('#display').addClass('hidden');
  await   team.get()
         .then(async function (snap) {
             if(!snap.exists)
@@ -115,6 +118,7 @@ async function displayEvents()
                 $('#invalid').text("Team Not in database");
             }
             else{
+                $('#event').parent().parent().parent().parent().removeClass('hidden');
                 $('#event').text("");
                 $('#event').append("<option disabled selected value> -- select an option -- </option>");
 

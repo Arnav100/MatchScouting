@@ -16,8 +16,13 @@ document.addEventListener("DOMContentLoaded", event => {
     $('#event').change(function () {
         $('#match').text("");
         $('#match').append("<option disabled selected value> -- select an option -- </option>");
-
+        $('#match').parent().parent().parent().removeClass("hidden");
+        $('#form').addClass('hidden');
         displayMatches();
+    });
+    $('#match').change(function() {
+        $('#form').removeClass('hidden');
+        reset();
     });
     $(".field button").on("click", function(){
        
@@ -169,11 +174,13 @@ function getChoices(teamNum)
             else {
                 console.log("This exists");
                 console.log(snap.data());
+                $('#match').parent().parent().parent().addClass("hidden");
+                $('#form').addClass('hidden');
                 $('#event').text("");
                 $('#event').append("<option disabled selected value> -- select an option -- </option>");
                 $('#match').text("");
                 $('#match').append("<option disabled selected value> -- select an option -- </option>");
-
+                console.log($("#event").parent().parent().parent().removeClass("hidden"));
                 snap.data().collectionNames.forEach(function (event) {
                     console.log(event);
                     $('#event').append("<option>" + event + "</option>");

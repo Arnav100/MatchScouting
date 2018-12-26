@@ -66,7 +66,7 @@
                         <div id="invalid" class="invalid-feedback"></div>
                     </div>
                 </div>
-                <div class = "pb-3 width-50">
+                <div class = "hidden pb-3 width-50">
                         <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <label>Event</label>
@@ -76,49 +76,40 @@
                                 </div>
                         </div>
                 </div>
-                    <div class="pb-3 width-50">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label>Match</label>
-                                <select id="match">
-                                </select>
-                            </div>
+                <div class="hidden pb-3 width-50">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label>Match</label>
+                            <select id="match">
+                            </select>
                         </div>
                     </div>
-                <div class = "row">
-                    <h4 class = "px-3"> Alliance: </h4>
-                    <select name="Alliance">
-                        <option value="Blue">Blue</option>
-                        <option value="Red">Red</option>
-                    </select>
                 </div>
-              
             </div>
-            <div class = "row">
+            <div id = "form" class = "hidden row">
                 <div class = "col-md-6 text-center">
                     <h1 class = "blackOps"> Auto</h1>
                     <div>
                         <h2 class = "blackOps">Cubes Placed</h2>
                         <div class="field pt-3 input-group mb-3">
                             <h4> On Switch</h4> 
-                                <div class="pl-3 input-group-prepend" id="button-addon3">
-                                    <button class="btn btn-outline-secondary" type="button">-</button>
-                                </div>
-                                <input id = "autoSwitch" readonly="readonly" value = "0"  class="form-control" >
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button">+</button>
-                                </div>
-
+                            <div class="pl-3 input-group-prepend" id="button-addon3">
+                                <button class="btn btn-outline-secondary" type="button">-</button>
+                            </div>
+                            <input id = "autoSwitch" readonly="readonly" value = "0"  class="form-control" >
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button">+</button>
+                            </div>
                         </div>
                         <div class="field pt-3 input-group mb-3">
                             <h4> On Scale</h4> 
-                                <div class="pl-3 input-group-prepend" id="button-addon3">
-                                    <button class="btn btn-outline-secondary" type="button">-</button>
-                                </div>
-                                <input id = "autoScale"  readonly="readonly" value = "0"  class="form-control">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button">+</button>
-                                </div>
+                            <div class="pl-3 input-group-prepend" id="button-addon3">
+                                <button class="btn btn-outline-secondary" type="button">-</button>
+                            </div>
+                            <input id = "autoScale"  readonly="readonly" value = "0"  class="form-control">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button">+</button>
+                            </div>
                         </div>
                         <h3 class= "d-flex justify-content-start"> Total:</h3>
 
@@ -132,13 +123,13 @@
                         </div>
                     </div>
                     <div class = "pt-1">
-                            <div class="input-group mb-3 border rounded">
-                                <div class="input-group-text">
-                                    <input id = "deadAuto"  type="checkbox"a>
-                                </div>                            
-                                <h4 class = "pl-3 pt-1">Dead</h4>
-                            </div>
+                        <div class="input-group mb-3 border rounded">
+                            <div class="input-group-text">
+                                <input id = "deadAuto"  type="checkbox"a>
+                            </div>                            
+                            <h4 class = "pl-3 pt-1">Dead</h4>
                         </div>
+                    </div>
                 </div>
                 <div class = " col-md-6 text-center">
                     <h1 class = "blackOps">Teleop</h1>
@@ -153,7 +144,6 @@
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button">+</button>
                                 </div>
-    
                         </div>
                         <div class="field pt-3 input-group mb-3">
                             <h4> On Scale</h4> 
@@ -166,7 +156,6 @@
                                 </div>
                         </div>
                         <h3 class= "d-flex justify-content-start"> Total:</h3>
-    
                     </div>
                     <div class = row>
                         <div class="pt-5 col-md-4">
@@ -206,24 +195,22 @@
                             </div>
                         </div>
                         <div class = "pt-3 col-md-6">
-                                <div class="input-group mb-3 border rounded">
-                                    <div class="input-group-text">
-                                        <input id="dead"type="checkbox" aria-label="Checkbox for following text input">
-                                    </div>                            
-                                    <h4 class = "pl-3 pt-1">Dead</h4>
-                                </div>
+                            <div class="input-group mb-3 border rounded">
+                                <div class="input-group-text">
+                                    <input id="dead"type="checkbox" aria-label="Checkbox for following text input">
+                                </div>                            
+                                <h4 class = "pl-3 pt-1">Dead</h4>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-            </div>
-            <div class = " text-center">
-                    <h1>Match Scores</h1>
-            </div>   
-            <div class= "pt-5  container-fluid" >
-                    <button id = "submit" style = "float: right" type="button" class="btn btn-primary btn-lg">Submit</button>
-            </div>
+                <div class="pt-5  container-fluid">
+                    <button id="submit" style="float: right" type="button" class="btn btn-primary btn-lg">Submit</button>
+                </div>
+            </div>  
+        </div>
+      
+            
         </div>
     </body>
 </html>
