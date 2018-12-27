@@ -1,5 +1,4 @@
 var team;
-var db;
 var matchNames;
 var autoScale;
 var autoSwitch;
@@ -21,9 +20,6 @@ var tippedOver;
 var climbChart;
 
 document.addEventListener("DOMContentLoaded", event => {
-
-    const app = firebase.app();
-    db = firebase.firestore();
     reset();
 
     console.log("running");
@@ -35,8 +31,23 @@ document.addEventListener("DOMContentLoaded", event => {
         reset();
         displayData();
     });
-
+    $('#list').on("click", function(){
+        var teamToAdd = 
+        userData.teamList.push(teamToAdd)
+        console.log(userData);
+        console.log("Contains test: " + userData.teamList.includes(teamToAdd));
+        changeToRemove();
+    })
 });
+
+function changeToRemove()
+{
+    $('#list').removeClass('btn-success');
+    $('#list').addClass('btn-danger');
+    $('#list').text("Remove From List");
+}
+
+function changeToAdd(){}
 
 function reset()
 {
@@ -57,6 +68,7 @@ function reset()
 async function displayData(event)
 {
     $('#display').removeClass('hidden');
+    $('#list').removeClass('hidden');
    var collectionName = $('#event option:selected').text();
   await team.collection(collectionName).get()
    .then(matches =>{
@@ -110,6 +122,7 @@ function pullArrayData(location, array)
 async function displayEvents()
 {
     $('#display').addClass('hidden');
+    $('#list').addClass('hidden');
  await   team.get()
         .then(async function (snap) {
             if(!snap.exists)
@@ -238,9 +251,9 @@ function getTeam()
     console.log("getting team");
     $('#teamNum').removeClass("is-invalid");
     var teamNum = $('#teamNum').val();
-    if (teamNum.length < 3) {
+    if (!currentUser) {
         $('#teamNum').addClass("is-invalid");
-        $('#invalid').text("Invalid Team Number");
+        $('#invalid').text("Need to sign in to see data");
         return false; 
     }
     team = db.collection("Teams").doc(teamNum);
@@ -248,7 +261,6 @@ function getTeam()
     console.log(team.id);   
     return true;
 }
-
 
 function indexOfMax(arr) {
     if (arr.length === 0) {

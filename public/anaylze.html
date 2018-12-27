@@ -22,6 +22,8 @@
                 messagingSenderId: "599148366126"
             };
             firebase.initializeApp(config);
+            const app = firebase.app();
+            var db = firebase.firestore();
         </script>
         
         <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -35,7 +37,9 @@
         <link href="https://fonts.googleapis.com/css?family=Black+Ops+One" rel="stylesheet">
         
         <link rel="stylesheet" type="text/css" href="style.css" />
-        <script src="output.js"></script>
+        <script src="javascript/output.js"></script>
+        <script src="javascript/user.js"></script>
+        <script src="javascript/emptyData.js"></script>
     </head>
     <body style = "background-color: aliceblue">
         
@@ -52,7 +56,7 @@
                     </li>
                 </div>
                 <div class="col-md-1 flex justify-content-end pb-3">
-                    <button class=" btn btn-light">Sign In</button>
+                    <button id = "signIn" class=" btn btn-light">Sign In</button>
                 </div>
             </nav>
         </div>
@@ -89,7 +93,7 @@
                 </div>
                 <div class = "col">
                     <!--When Clicked, the text should change to Remove From List and be red-->
-                    <button class = "float-right btn btn-success">Add To List</button>
+                    <button id ="list" class = "hidden float-right btn btn-success">Add To List</button>
                 </div>
             </div>
             <div id = "display" class = "hidden">
