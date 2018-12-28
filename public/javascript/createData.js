@@ -2,8 +2,10 @@ function sendToFirebase()
 {
     console.log("This happens last");
     var eventNames = [];
+    var eventKeys = []
     for (var i = 0; i < events.length; i++) {
         eventNames.push(events[i].short_name);
+        eventKeys.push(events[i].key);
         for (var j = 0; j < matches[i].length; j++) {
 
             var matchNum = 'match' + matches[i][j];
@@ -14,6 +16,7 @@ function sendToFirebase()
     }
     var data = {};
     data['collectionNames'] = eventNames;
+    data['keys'] = eventKeys;
     team.set(data);
 }
 

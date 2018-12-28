@@ -3,6 +3,7 @@ var matches = [];
 var team;
 var scoutData;
 var keys = [];
+
 document.addEventListener("DOMContentLoaded", event => {
 
     console.log("running");
@@ -68,10 +69,12 @@ document.addEventListener("DOMContentLoaded", event => {
             addData(scoutData.teleop.climbing.recievedHelp, $('#recievedHelp').is(":checked"));
          
             console.log("ScoutData: " + scoutData);
-        //    team.collection(event).doc(match).update(scoutData);
-            userData.matchesScouted.push(scoutData.key);
+            team.collection(event).doc(match).update(scoutData);
+            var teamNum = $('#teamNum').val();
+            userData.matchesScouted.push(teamNum + scoutData.key);
             console.log("UserData: " + userData);
             console.log("UserRef: " + userRef);
+            debugger;
             userRef.update(userData);
         })
         reset();
@@ -165,11 +168,11 @@ function displayMatches()
 
     var collectionName = $('#event option:selected').text();
     console.log("the collection is: " + collectionName);
-
+    var teamNum = $('#teamNum').val();
     team.collection(collectionName).get()
     .then(snap => {
         snap.docs.forEach(function(match){
-            if(userData.matchesScouted.includes(match.data().key))
+            if(userData.matchesScouted.includes(teamNum + match.data().key))
                 return;
                 console.log(match.id);
             $('#match').append("<option>" + match.id +"</option>");

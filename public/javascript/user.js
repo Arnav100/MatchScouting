@@ -29,6 +29,11 @@ document.addEventListener("DOMContentLoaded", event =>{
             userData = snap.data();
      })
  }
+ function setUserData()
+ {
+     db.collection("Users").doc(currentUser.uid).update(userData);
+ }
+ 
  function googleLogin() {
     console.log("Clicked");
     const provider = new firebase.auth.GoogleAuthProvider();
