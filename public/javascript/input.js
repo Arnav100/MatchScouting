@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", event => {
 
     console.log("running");
     console.log(test);
+    
     $('#teamNumButton').on("click",  function(){
         if(!currentUser){
             $('#invalid').text("Need To Sign In to scout");

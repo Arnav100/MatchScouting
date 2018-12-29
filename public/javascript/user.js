@@ -2,6 +2,7 @@ var test = "Hello World!"
 var currentUser;
 var userRef;
 var userData;
+
 document.addEventListener("DOMContentLoaded", event =>{
     console.log("User stuff is running");
     
@@ -40,7 +41,8 @@ document.addEventListener("DOMContentLoaded", event =>{
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(function () {
             console.log("Set persistence thing");
-            firebase.auth().signInWithPopup(provider)
+            firebase.auth().signInWithRedirect(provider);
+            firebase.auth().getRedirectResult()
                 .then(result => {
                     console.log("signed in");
                     var token = result.credential.accessToken;
