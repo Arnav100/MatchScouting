@@ -27,9 +27,8 @@ document.addEventListener("DOMContentLoaded", event => {
         if(getTeam())
             displayEvents();
         else 
-        {
             $('#event').addClass('hidden');
-        }
+        
     });
     $('#event').change(function () {
         reset();
@@ -45,13 +44,11 @@ function toggleTeam()
     var pickedTeam = $('#teamNum').val() + " " + $('#event option:selected').text();
     if($('#list').hasClass('btn-success'))
     {
-        console.log("Adding Team");
         userData.teamList.push(pickedTeam)
         changeToRemove();
     }
     else
     {
-        console.log("Removing Team");
         removeFromTeamList(pickedTeam);
         changeToAdd();
     } 
@@ -68,7 +65,6 @@ function changeToRemove()
 
 function changeToAdd()
 {
-    console.log("Changing to add");
     $('#list').removeClass('btn-danger');
     $('#list').addClass('btn-success');
     $('#list').text("Add To List");
@@ -94,34 +90,22 @@ async function displayData(event)
 {
     $('#display').removeClass('hidden');
     var currentTeam = $('#teamNum').val() + " " + $('#event option:selected').text();
-    if (userData.teamList.includes(currentTeam)){
-        console.log("The team is included");
-        console.log("List: " + userData.teamList);
+    if (userData.teamList.includes(currentTeam))
         changeToRemove();
-       
-    }
     else
-    {
-        console.log("The team is not included");
-        console.log("List: " + userData.teamList);
         changeToAdd();
-    }
     
     $('#list').removeClass('hidden');
    
-
    var collectionName = $('#event option:selected').text();
    console.log("Collection:" + collectionName);
-  await team.collection(collectionName).get()
+   await team.collection(collectionName).get()
    .then(matches =>{
       console.log("Matches: " + matches)
         for(const match of matches.docs)
         {
-            
             var data = match.data();
-            console.log("Data:" + data);
-            if (pullArrayData(data.auto.autoCubes.scale, autoScale) == -1)
-                return;
+            pullArrayData(data.auto.autoCubes.scale, autoScale);
             matchNames.push(match.id);
             pullArrayData(data.auto.autoCubes.switch, autoSwitch);
             pullArrayData(data.teleop.teleopCubes.switch, teleSwitch);
@@ -164,7 +148,6 @@ function pullArrayData(location, array)
     if(i == -1)
         return i;
     array.push(location.value[i]);
-    console.log("Value: " + location.value[i]);
 }
 
 async function displayEvents()
