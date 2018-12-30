@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", event => {
 
 function toggleTeam()
 {
-    var pickedTeam = $('#teamNum').val() + " " + $('#event option:selected').attr("data-key");
+    var pickedTeam = $('#teamNum').val() + " " + $('#event option:selected').text();
     if($('#list').hasClass('btn-success'))
     {
         console.log("Adding Team");
@@ -52,8 +52,7 @@ function toggleTeam()
     else
     {
         console.log("Removing Team");
-        var i = userData.teamList.indexOf(pickedTeam);
-        userData.teamList.splice(i, 1);
+        removeFromTeamList(pickedTeam);
         changeToAdd();
     } 
     setUserData();
@@ -94,7 +93,7 @@ function reset()
 async function displayData(event)
 {
     $('#display').removeClass('hidden');
-    var currentTeam = $('#teamNum').val() + " " + $('#event option:selected').attr("data-key");
+    var currentTeam = $('#teamNum').val() + " " + $('#event option:selected').text();
     if (userData.teamList.includes(currentTeam)){
         console.log("The team is included");
         console.log("List: " + userData.teamList);
@@ -185,10 +184,7 @@ async function displayEvents()
                 $('#event').text("");
                 $('#event').append("<option disabled selected value> -- select an option -- </option>");
                 for(var i = 0; i < snap.data().collectionNames.length; i ++)
-                    $('#event').append("<option data-key = \"" + snap.data().keys[i] + "\">" + 
-                        snap.data().collectionNames[i] + "</option > ");
-                
-             
+                    $('#event').append("<option>" + snap.data().collectionNames[i] + "</option > ");
             }     
         });
 }

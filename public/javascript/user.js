@@ -13,11 +13,11 @@ document.addEventListener("DOMContentLoaded", event =>{
     userSignedIn();
 });
 
- function getUserRef()
+ async function getUserRef()
  {
      userRef = db.collection("Users").doc(currentUser.uid);
-     userRef.get()
-     .then(snap => {
+    await userRef.get()
+     .then(async snap => {
          if(!snap.exists)
         {
             console.log("User currently not in database");
@@ -27,12 +27,18 @@ document.addEventListener("DOMContentLoaded", event =>{
             getUserRef();
         }
         else
-            userData = snap.data();
+            userData = await snap.data();
      })
  }
  function setUserData()
  {
      db.collection("Users").doc(currentUser.uid).update(userData);
+ }
+
+ function removeFromTeamList(team)
+ {
+     var i = userData.teamList.indexOf(team);
+     userData.teamList.splice(i, 1);
  }
  
  function googleLogin() {
@@ -90,7 +96,7 @@ document.addEventListener("DOMContentLoaded", event =>{
 
  function userSignedIn()
  {
-     firebase.auth().onAuthStateChanged(function (user) {
+     firebase.auth().onAuthStateChanged(async function (user) {
        
          if (user) {
              // User is signed in.
@@ -105,11 +111,16 @@ document.addEventListener("DOMContentLoaded", event =>{
              var providerData = user.providerData;
              console.log(displayName + "is signed in");
              if (userData == null)
-              getUserRef();
+             await getUserRef();
+
          } else {
            console.log("USER IS SIGNED OUT");
              currentUser = user;
             loginToggle();
          }
+         //This code is to run for the My List page, this is so that the list is made after 
+         //Checking if the user is signed in.
+         if (document.location.pathname == "/list.html")
+             makeUserList();
      });
  }

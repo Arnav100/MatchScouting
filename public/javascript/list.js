@@ -1,23 +1,71 @@
 document.addEventListener("DOMContentLoaded", async event => {
-    console.log("List code running")
+    console.log("List code running");
+    
     $('#edit').on("click", editMode)
-
-    $('#load').on("click", function(){
-        console.log("The current user is: " + currentUser);
-        if (!currentUser)
-            $(".card-body").text("You need to Sign In to see teams");
-        else
-            makeTable(); 
+    $('#delete').on("click", function(){
+        deleteItem()
     });
+    $('#reset').on("click", resetList);
 
-
-    $("#sort").sortable();
-    $("#sort").sortable("disable");
 });
+
+function confirmDelete(item)
+{
+   
+    var key = $(item).parent().parent().attr("data-key");
+    var team = key.substr(0, key.indexOf(' '));
+
+    $('#deleteModal .modal-body').html("<p id=\"deleteTeam\" data-key=\""+ key + "\">Are you sure you want to"
+    + " delete Team " + team + " from your list? </p>");
+}
+
+function resetList()
+{
+    userData.teamList = [];
+    setUserData();
+    makeTable();
+}
+
+function deleteItem()
+{
+    var team = $('#deleteTeam').attr("data-key");
+    removeFromTeamList(team);
+    setUserData();
+    makeTable(); 
+}
+
+function makeUserList()
+{
+    console.log("The current user is: " + currentUser);
+    if (!currentUser)
+        $(".card-body").text("You need to Sign In to see teams");
+    else{
+        makeTable(); 
+        $("#sort").sortable();
+        $("#sort").sortable("disable");
+        $(".btn-delete").on("click", function(){
+            confirmDelete(this);
+        })
+    }
+}
 
 function makeTable()
 {
+    console.log("user data is: " + userData);
+    if (userData.teamList.length == 0)
+        $(".card-body").html("Looks like you don't have any teams picked. "
+            +"Go to the <a href = \"anaylze.html\"> anaylze page  </a> to pick teams");
+    else
+    {
+        $("table").removeClass('disappear');
+        $("#sort").text("");
+        userData.teamList.forEach(team =>{
+            var name = team.substr(0, team.indexOf(' '));
+            var event = team.substr(team.indexOf(' ') + 1);
+            $('#sort').append(getEmptyTableRow(team, name, event));
+        });
 
+    }
 }
 
 function editMode()
@@ -70,7 +118,11 @@ function leaveEditMode()
     saveOrder();
 }
 
-function saveOrder()
-{
-    //This will save the new order as the order stored in firebase.
+function saveOrder() {
+    var teams = $('#sort').children("tr");
+    var keys = []
+    for (var i = 0; i < teams.length; i++)
+        keys.push($(teams[i]).attr("data-key"));
+    userData.teamList = keys;
+    setUserData();
 }

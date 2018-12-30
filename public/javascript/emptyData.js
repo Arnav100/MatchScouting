@@ -90,3 +90,16 @@ function getEmptyUserData()
     }
     return data;
 }
+
+/**
+ * Returns a string containing the html for a row element
+ */
+function getEmptyTableRow(key, team, event)
+{
+    return "<tr data-key=\""+ key +"\"><td>" + team + "</td>"
+      + "<td>" + event +"</td>"
+      + "<td align=\"right\">"
+      +"<button data-toggle=\"modal\" data-target=\"#deleteModal\""
+      + "class=\"btn-delete fa fa-times btn bg-danger\"></button></td>"
+      + "</tr >";
+}
