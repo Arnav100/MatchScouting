@@ -1,5 +1,4 @@
 var team;
-var db;
 var matchNames;
 var autoScale;
 var autoSwitch;
@@ -21,22 +20,55 @@ var tippedOver;
 var climbChart;
 
 document.addEventListener("DOMContentLoaded", event => {
-
-    const app = firebase.app();
-    db = firebase.firestore();
     reset();
 
     console.log("running");
     $('#teamNumButton').on("click", function() {
         if(getTeam())
             displayEvents();
+        else 
+            $('#event').addClass('hidden');
+        
     });
     $('#event').change(function () {
         reset();
         displayData();
     });
-
+    $('#list').on("click", function(){
+        toggleTeam();
+    })
 });
+
+function toggleTeam()
+{
+    var pickedTeam = $('#teamNum').val() + " " + $('#event option:selected').text();
+    if($('#list').hasClass('btn-success'))
+    {
+        userData.teamList.push(pickedTeam)
+        changeToRemove();
+    }
+    else
+    {
+        removeFromTeamList(pickedTeam);
+        changeToAdd();
+    } 
+    setUserData();
+}
+
+function changeToRemove()
+{
+    $('#list').removeClass('btn-success');
+    $('#list').addClass('btn-danger');
+    $('#list').text("Remove From List");
+
+}
+
+function changeToAdd()
+{
+    $('#list').removeClass('btn-danger');
+    $('#list').addClass('btn-success');
+    $('#list').text("Add To List");
+}
 
 function reset()
 {
@@ -57,25 +89,36 @@ function reset()
 async function displayData(event)
 {
     $('#display').removeClass('hidden');
+    var currentTeam = $('#teamNum').val() + " " + $('#event option:selected').text();
+    if (userData.teamList.includes(currentTeam))
+        changeToRemove();
+    else
+        changeToAdd();
+    
+    $('#list').removeClass('hidden');
+   
    var collectionName = $('#event option:selected').text();
-  await team.collection(collectionName).get()
+   console.log("Collection:" + collectionName);
+   await team.collection(collectionName).get()
    .then(matches =>{
-       matches.docs.forEach(function (match) {
-           var data = match.data();
-           if (pullArrayData(data.auto.autoCubes.scale, autoScale) == -1)
-               return;
-           matchNames.push(match.id);
-           pullArrayData(data.auto.autoCubes.switch, autoSwitch);
-           pullArrayData(data.teleop.teleopCubes.switch, teleSwitch);
-           pullArrayData(data.teleop.teleopCubes.scale, teleScale);
-           pullBooleanData(data.auto.autoLine, autoLineCount);
-           pullBooleanData(data.auto.deadAuto, deadAutoCount);
-           pullBooleanData(data.teleop.tippedOver, tippedOver);
-           pullBooleanData(data.teleop.died, died);
-           pullBooleanData(data.teleop.climbing.climbed, climbed);
-           pullBooleanData(data.teleop.climbing.gaveHelp, gaveHelp);
-           pullBooleanData(data.teleop.climbing.recievedHelp, gotHelp);
-       });
+      console.log("Matches: " + matches)
+        for(const match of matches.docs)
+        {
+            var data = match.data();
+            pullArrayData(data.auto.autoCubes.scale, autoScale);
+            matchNames.push(match.id);
+            pullArrayData(data.auto.autoCubes.switch, autoSwitch);
+            pullArrayData(data.teleop.teleopCubes.switch, teleSwitch);
+            pullArrayData(data.teleop.teleopCubes.scale, teleScale);
+            pullBooleanData(data.auto.autoLine, autoLineCount);
+            pullBooleanData(data.auto.deadAuto, deadAutoCount);
+            pullBooleanData(data.teleop.tippedOver, tippedOver);
+            pullBooleanData(data.teleop.died, died);
+            pullBooleanData(data.teleop.climbing.climbed, climbed);
+            pullBooleanData(data.teleop.climbing.gaveHelp, gaveHelp);
+            pullBooleanData(data.teleop.climbing.recievedHelp, gotHelp); 
+        }
+
    });
 
    autoChart = makeChart("Auto", autoChart, autoScale, autoSwitch);
@@ -110,21 +153,21 @@ function pullArrayData(location, array)
 async function displayEvents()
 {
     $('#display').addClass('hidden');
+    $('#list').addClass('hidden');
  await   team.get()
         .then(async function (snap) {
             if(!snap.exists)
             {
                 $('#teamNum').addClass("is-invalid");
                 $('#invalid').text("Team Not in database");
+                $('#event').parent().parent().parent().parent().addClass('hidden');
             }
             else{
                 $('#event').parent().parent().parent().parent().removeClass('hidden');
                 $('#event').text("");
                 $('#event').append("<option disabled selected value> -- select an option -- </option>");
-
-                snap.data().collectionNames.forEach(function(event){
-                    $('#event').append("<option>" + event + "</option>");
-                });   
+                for(var i = 0; i < snap.data().collectionNames.length; i ++)
+                    $('#event').append("<option>" + snap.data().collectionNames[i] + "</option > ");
             }     
         });
 }
@@ -238,9 +281,9 @@ function getTeam()
     console.log("getting team");
     $('#teamNum').removeClass("is-invalid");
     var teamNum = $('#teamNum').val();
-    if (teamNum.length < 3) {
+    if (!currentUser) {
         $('#teamNum').addClass("is-invalid");
-        $('#invalid').text("Invalid Team Number");
+        $('#invalid').text("Need to sign in to see data");
         return false; 
     }
     team = db.collection("Teams").doc(teamNum);
@@ -248,7 +291,6 @@ function getTeam()
     console.log(team.id);   
     return true;
 }
-
 
 function indexOfMax(arr) {
     if (arr.length === 0) {

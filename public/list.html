@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Team List</title>
+        
+        <link rel="shortcut icon" href="icon.png">
+        <link rel="icon" href="icon.png">
+        <link rel="apple-touch-icon" href="icon.png">
+        
+        <!-- Set Up Firebase -->
+        <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyChaXCDjgbYfHvla_U0fgXggWhtsGfPUZ8",
+                authDomain: "scoutingapp-c7139.firebaseapp.com",
+                databaseURL: "https://scoutingapp-c7139.firebaseio.com",
+                projectId: "scoutingapp-c7139",
+                storageBucket: "scoutingapp-c7139.appspot.com",
+                messagingSenderId: "599148366126"
+            };
+            firebase.initializeApp(config);
+            const app = firebase.app();
+            var db = firebase.firestore();
+        </script>
+        
+        <!-- Set Up Jquery-->
+        <link rel="stylesheet" href="jquery-ui.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.js" 
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="crossorigin="anonymous"></script>
+        <script src="jquery-ui.min.js"></script>     
+        <script src="jquery.ui.touch-punch.min.js"></script>
+
+        <!-- Set Up Bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" 
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" 
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+        <!-- Set Up Font Awesome and Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Black+Ops+One" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" 
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+       
+        <!-- Set Up Program Files-->
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <script src="javascript/user.js"></script>
+        <script src="javascript/list.js"></script>
+        <script src="javascript/emptyData.js"></script>
+    </head>
+    <body style = "background-color: aliceblue">
+        <div style="background-color: #00C851" class="sticky-top rounded pt-3 container border-bottom nav-scroller">
+            <nav class="nav row ">
+                <div class="col-md-11 row">
+                    <h4 class="pl-3">Electric Mayhem: My List</h4>
+                    <img class="pl-3" src="logo.png" height="30">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="index.html">Scout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="anaylze.html">Anaylze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-white"" href="list.html">My List</a>
+                    </li>
+                </div>
+                <div class="col-md-1 flex justify-content-end pb-3">
+                    <button id="signIn" class="btn btn-light" >Sign In</button>
+                </div>
+            </nav>
+        </div>
+        <div class = "container">
+            <div class="mt-3 card card-table">
+                <div class="card-header">
+                    <div class="title">Your Teams</div>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="disappear table table-light">
+                        <thead>
+                            <tr>
+                                <th style="width:20%;">Team</th>
+                                <th>Event</th>
+                            </tr>
+                        </thead>
+                        <tbody id = "sort"class="no-border-x">
+                          <!--  <tr>
+                                <td>4930</td>
+                                <td>Finger Lakes</td>
+                                <td align = "right"><button data-toggle="modal" data-target="#deleteModal" class = "fa fa-times btn bg-danger"></button></td>
+                            </tr>
+                            <tr>
+                                <td>1507</td>
+                                <td>Finger Lakes</td>
+                                <td align = "right"><button data-toggle="modal" data-target="#deleteModal" class="fa fa-times btn bg-danger"></button></td>
+                            </tr>
+                            <tr>
+                                <td>340</td>
+                                <td>Finger Lakes</td>
+                                <td align = "right"><button data-toggle="modal" data-target="#deleteModal" class="fa fa-times btn bg-danger"></button></td>
+                            </tr>
+                            <tr>
+                                <td>3015</td>
+                                <td> Finger Lakes</td>
+                                <td align = "right"><button data-toggle="modal" data-target="#deleteModal" class="fa fa-times btn bg-danger"></button></td>
+                            </tr>
+                            <tr>
+                                <td>3003</td>
+                                <td>Finger Lakes</td>
+                                <td align = "right"><button data-toggle="modal" data-target="#deleteModal" class="fa fa-times btn bg-danger"></button></td>
+                            </tr> -->
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+            <div class = "mt-3 pb-3">
+                <div class="float-left pl-2">
+                    <button id="edit"class="btn btn-info">Change Order</button>
+                </div>
+                <div class="float-right pr-2">
+                    <button data-toggle="modal" data-target="#resetModal"class="btn btn-danger">Reset</button>
+                </div>
+            </div>
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" >Delete?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
+                            <button id = "delete" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reset Modal -->
+            <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" >Reset Data?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete all teams from your list?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
+                            <button id ="reset" type="button" class="btn btn-danger" data-dismiss="modal">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-5">
+            <hr class="w-75 my-0">
+            <p class="text-center py-5">© 2018-2019 Nichols Electric Mayhem. All Rights Reserved.</p>
+        </div>
+    </body>
+</html>
