@@ -47,9 +47,7 @@ document.addEventListener("DOMContentLoaded", event => {
         var match = $('#match option:selected').text();
       await  team.collection(event).doc(match).get()
         .then(snap => {
-          //  console.log(snap.data().auto);
             scoutData = snap.data();
-            console.log(scoutData);
             var autoScale = parseInt($('#autoScale').val());
             var autoSwitch = parseInt($('#autoSwitch').val());
             addData(scoutData.auto.autoCubes.scale, autoScale);
@@ -69,13 +67,9 @@ document.addEventListener("DOMContentLoaded", event => {
             addData(scoutData.teleop.climbing.gaveHelp, $('#gaveHelp').is(":checked"));
             addData(scoutData.teleop.climbing.recievedHelp, $('#recievedHelp').is(":checked"));
          
-            console.log("ScoutData: " + scoutData);
             team.collection(event).doc(match).update(scoutData);
             var teamNum = $('#teamNum').val();
             userData.matchesScouted.push(teamNum + scoutData.key);
-            console.log("UserData: " + userData);
-            console.log("UserRef: " + userRef);
-            debugger;
             userRef.update(userData);
         })
         reset();
@@ -113,7 +107,7 @@ function getChoices(teamNum)
                 $('#event').append("<option disabled selected value> -- select an option -- </option>");
                 $('#match').text("");
                 $('#match').append("<option disabled selected value> -- select an option -- </option>");
-                console.log($("#event").parent().parent().parent().removeClass("hidden"));
+                $("#event").parent().parent().parent().removeClass("hidden");
                 snap.data().collectionNames.forEach(function (event) {
                     $('#event').append("<option>" + event + "</option>");
                 });

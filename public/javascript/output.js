@@ -28,17 +28,19 @@ document.addEventListener("DOMContentLoaded", event => {
             displayEvents();
         else 
             $('#event').addClass('hidden');
-        
     });
+
     $('#event').change(function () {
         reset();
         displayData();
     });
-    $('#list').on("click", function(){
-        toggleTeam();
-    })
+    
+    $('#list').on("click", toggleTeam)
 });
 
+/**
+ * Switches between the click to add and remove team button
+ */
 function toggleTeam()
 {
     var pickedTeam = $('#teamNum').val() + " " + $('#event option:selected').text();
@@ -55,6 +57,9 @@ function toggleTeam()
     setUserData();
 }
 
+/**
+ * Changes the add team button to the remove
+ */
 function changeToRemove()
 {
     $('#list').removeClass('btn-success');
@@ -63,6 +68,9 @@ function changeToRemove()
 
 }
 
+/**
+ * Changes the remove button to the add team button
+ */
 function changeToAdd()
 {
     $('#list').removeClass('btn-danger');
@@ -70,6 +78,9 @@ function changeToAdd()
     $('#list').text("Add To List");
 }
 
+/**
+ * Resets all counter variables
+ */
 function reset()
 {
     matchNames = [];
@@ -86,7 +97,10 @@ function reset()
     tippedOver = [0];
 }
 
-async function displayData(event)
+/**
+ * Gets the team's data and displays it to the user
+ */
+async function displayData()
 {
     $('#display').removeClass('hidden');
     var currentTeam = $('#teamNum').val() + " " + $('#event option:selected').text();
@@ -98,10 +112,8 @@ async function displayData(event)
     $('#list').removeClass('hidden');
    
    var collectionName = $('#event option:selected').text();
-   console.log("Collection:" + collectionName);
    await team.collection(collectionName).get()
    .then(matches =>{
-      console.log("Matches: " + matches)
         for(const match of matches.docs)
         {
             var data = match.data();
@@ -133,6 +145,9 @@ async function displayData(event)
 
 } 
 
+/** 
+ * Takes in the location of the desired data, and adds to the counter if the value is true
+ */
 function pullBooleanData(location, counter)
 {
     var i = indexOfMax(location.frequency);
@@ -142,6 +157,9 @@ function pullBooleanData(location, counter)
         counter[0] ++ ;
 }
 
+/**
+ * Gets the most frequent data value and adds it to the storage array
+ */
 function pullArrayData(location, array)
 {
     var i = indexOfMax(location.frequency)
@@ -150,6 +168,9 @@ function pullArrayData(location, array)
     array.push(location.value[i]);
 }
 
+/**
+ * Displays the events the team is in
+ */
 async function displayEvents()
 {
     $('#display').addClass('hidden');
@@ -172,11 +193,17 @@ async function displayEvents()
         });
 }
 
+/**
+ * Makes a card at the id given with the data
+ */
 function makeCard(id, data)
 {
     $("#" + id).text(data[0]);
 }
 
+/**
+ * Makes the type of chart given with the given info
+ */
 function makeChart(type, chart, scale, swich)
 {
     var maxTicks = 10;
@@ -233,6 +260,9 @@ function makeChart(type, chart, scale, swich)
     return chart;
 }
 
+/**
+ * Used to make the climb chart
+ */
 function makeClimbChart(total, gave, got)
 {
     var data = {
@@ -276,6 +306,9 @@ function makeClimbChart(total, gave, got)
     
 }
 
+/**
+ * Checks to see what team is inputed and if it is a team in database
+ */
 function getTeam()
 {   
     console.log("getting team");
@@ -292,6 +325,9 @@ function getTeam()
     return true;
 }
 
+/**
+ * Finds the index of the largest value in the array
+ */
 function indexOfMax(arr) {
     if (arr.length === 0) {
         return -1;

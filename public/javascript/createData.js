@@ -1,6 +1,8 @@
+/**
+ * Sends the new team with events and empty match data to firebase
+ */
 function sendToFirebase()
 {
-    console.log("This happens last");
     var eventNames = [];
     var eventKeys = []
     for (var i = 0; i < events.length; i++) {
@@ -43,15 +45,9 @@ async function getEvents(teamNum) {
             for (var i = 0; i < data.length; i++)
                 if (data[i].short_name != "")
                     events.push(data[i]);
-            console.log("Before making matches");
             for (const event of events) {
-                await getMatches(teamNum, event)
-                    .then(result => {
-                        console.log("Complete");
-                    })
+                await getMatches(teamNum, event);
             }
-
-            console.log("After making matches");
         })
         .catch(err => {
             if (typeof err != "string")
@@ -83,7 +79,6 @@ async function getMatches(teamNum, event) {
             }
 
             var eventMatches = [];
-            console.log("This happens before each event match")
             for (const match of data) {
                 if (match.comp_level == "qm") 
                 {
@@ -96,7 +91,6 @@ async function getMatches(teamNum, event) {
             }
             eventMatches.sort();
             await matches.push(eventMatches);
-            console.log("This happens after each event match")
         }
     });
 }
