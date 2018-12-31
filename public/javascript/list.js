@@ -2,13 +2,14 @@ document.addEventListener("DOMContentLoaded", async event => {
     console.log("List code running");
     
     $('#edit').on("click", editMode)
-    $('#delete').on("click", function(){
-        deleteItem()
-    });
+    $('#delete').on("click", deleteItem);
     $('#reset').on("click", resetList);
 
 });
 
+/**
+ * Prompts the user to validate their delete decision
+ */
 function confirmDelete(item)
 {
    
@@ -19,6 +20,9 @@ function confirmDelete(item)
     + " delete Team " + team + " from your list? </p>");
 }
 
+/**
+ * Deletes all teams from user list
+ */
 function resetList()
 {
     userData.teamList = [];
@@ -26,6 +30,9 @@ function resetList()
     makeTable();
 }
 
+/**
+ * Deletes the team from user data
+ */
 function deleteItem()
 {
     var team = $('#deleteTeam').attr("data-key");
@@ -34,9 +41,11 @@ function deleteItem()
     makeTable(); 
 }
 
+/**
+ * Makes the table with all its features or says to sign in 
+ */
 function makeUserList()
 {
-    console.log("The current user is: " + currentUser);
     if (!currentUser)
         $(".card-body").text("You need to Sign In to see teams");
     else{
@@ -49,9 +58,11 @@ function makeUserList()
     }
 }
 
+/**
+ * Makes the table based of teams in the user's list
+ */
 function makeTable()
 {
-    console.log("user data is: " + userData);
     if (userData.teamList.length == 0)
         $(".card-body").html("Looks like you don't have any teams picked. "
             +"Go to the <a href = \"anaylze.html\"> anaylze page  </a> to pick teams");
@@ -68,6 +79,9 @@ function makeTable()
     }
 }
 
+/**
+ * Switches to team order edit mode
+ */
 function editMode()
 {
     $('#edit').text("Save");
@@ -78,6 +92,9 @@ function editMode()
     makeSortable()
 }
 
+/**
+ * Makes the team list able to be sorted
+ */
 function makeSortable()
 {
     $('tr button').each(function(){
@@ -94,6 +111,9 @@ function makeSortable()
     $("#sort").sortable("enable");
 }
 
+/**
+ * Stops the sortable feature for the list
+ */
 function stopSortable()
 {
     $('tr button').each(function () {
@@ -107,6 +127,9 @@ function stopSortable()
     $("#sort").sortable("disable");
 }
 
+/**
+ * Ends edit mode and saves the new order
+ */
 function leaveEditMode()
 {
     $('#save').text("Change Order");
@@ -118,6 +141,9 @@ function leaveEditMode()
     saveOrder();
 }
 
+/**
+ * Saves the new list order as the list
+ */
 function saveOrder() {
     var teams = $('#sort').children("tr");
     var keys = []

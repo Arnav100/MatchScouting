@@ -5,14 +5,12 @@ var userData;
 
 document.addEventListener("DOMContentLoaded", event =>{
     console.log("User stuff is running");
-    
-
-
-  //  $('#signIn').on("click", googleLogin);
-    $('#signOut').on("click", googleLogout);
-    userSignedIn();
+    checkForUser();
 });
 
+/**
+ * Gets the user's data, makes new user if it currently doesn't exist
+ */
  async function getUserRef()
  {
      userRef = db.collection("Users").doc(currentUser.uid);
@@ -30,43 +28,49 @@ document.addEventListener("DOMContentLoaded", event =>{
             userData = await snap.data();
      })
  }
+
+ /**
+  * Updates the user's data
+  */
  function setUserData()
  {
      db.collection("Users").doc(currentUser.uid).update(userData);
  }
 
+ /**
+  * Removes the given team from the list
+  */
  function removeFromTeamList(team)
  {
      var i = userData.teamList.indexOf(team);
      userData.teamList.splice(i, 1);
  }
  
+ /**
+  * Logs in the user
+  */
  function googleLogin() {
-    console.log("Clicked");
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(function () {
-            console.log("Set persistence thing");
             firebase.auth().signInWithRedirect(provider);
             firebase.auth().getRedirectResult()
                 .then(result => {
                     console.log("signed in");
-                    var token = result.credential.accessToken;
-                    console.log(token);
-                    const user = result.user;
-                    currentUser = user;
+                    currentUser = result.user;
                     loginToggle();
                 })
                 .catch(err =>{
                     console.log(err);
-                  
                 });
         })
  }
 
+ /**
+  * Signs out the user
+  */
  function googleLogout()
  {
-     console.log("Running logout");
      firebase.auth().signOut().then(function () {
          console.log('Signed Out');
          currentUser = null;
@@ -76,6 +80,9 @@ document.addEventListener("DOMContentLoaded", event =>{
      });
  }
 
+ /**
+  * Toggles between the sign in or sign out, depending on if currentUser exists
+  */
  function loginToggle()
  {
      if(currentUser)
@@ -94,28 +101,24 @@ document.addEventListener("DOMContentLoaded", event =>{
     }
  }
 
- function userSignedIn()
+ /**
+  * Checks if user is signed in and gets data.
+  */
+ function checkForUser()
  {
      firebase.auth().onAuthStateChanged(async function (user) {
        
          if (user) {
-             // User is signed in.
+            // User is signed in.
              currentUser = user;
             loginToggle();
-             var displayName = user.displayName;
-             var email = user.email;
-             var emailVerified = user.emailVerified;
-             var photoURL = user.photoURL;
-             var isAnonymous = user.isAnonymous;
-             var uid = user.uid;
-             var providerData = user.providerData;
-             console.log(displayName + "is signed in");
-             if (userData == null)
+            console.log(user.displayName + "is signed in");
+            if (userData == null)
              await getUserRef();
 
          } else {
-           console.log("USER IS SIGNED OUT");
-             currentUser = user;
+            console.log("USER IS SIGNED OUT");
+            currentUser = user;
             loginToggle();
          }
          //This code is to run for the My List page, this is so that the list is made after 
