@@ -4,7 +4,7 @@
 function sendToFirebase()
 {
     var eventNames = [];
-    var eventKeys = []
+    var eventKeys = [];
     for (var i = 0; i < events.length; i++) {
         eventNames.push(events[i].short_name);
         eventKeys.push(events[i].key);

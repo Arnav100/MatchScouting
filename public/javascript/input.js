@@ -7,7 +7,6 @@ var keys = [];
 document.addEventListener("DOMContentLoaded", event => {
 
     console.log("running");
-    console.log(test);
     
     $('#teamNumButton').on("click",  function(){
         if(!currentUser){
@@ -88,10 +87,11 @@ function getChoices(teamNum)
             $('#teamNum').removeClass("is-invalid");
             if (!snap.exists) {
                 console.log("Team Currently Not in database");
+                $("#event").parent().parent().parent().addClass("hidden");
                 getEvents(teamNum)
                     .then(ret => {
                         sendToFirebase();
-                        getChoices();
+                        getChoices(teamNum);
                     })
                     .catch(err => {
                         console.log(err)
